@@ -1,0 +1,29 @@
+name: Copylint
+description: Scan changed Markdown for AI tells with the Copylint API and annotate the pull request. Pass is the floor.
+author: Copylint
+branding:
+  icon: check-square
+  color: gray-dark
+inputs:
+  api-key:
+    description: Copylint API key (store it as a repository secret).
+    required: true
+  files:
+    description: File extension glob to scan when not running on a pull request.
+    required: false
+    default: "**/*.md"
+  threshold:
+    description: Fail at score >= N.
+    required: false
+    default: "40"
+  personal:
+    description: Apply the team voice profile (Team plan).
+    required: false
+    default: "false"
+  endpoint:
+    description: API origin.
+    required: false
+    default: https://copylint.vercel.app
+runs:
+  using: node20
+  main: index.js
