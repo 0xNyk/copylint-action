@@ -36,6 +36,17 @@ function globFiles(pattern) {
   return list;
 }
 
+/** Suggested fix from the API, as one annotation-safe sentence. */
+function fixNote(s) {
+  if (!s) return "";
+  const clip = (t) => {
+    const one = String(t).replace(/\s+/g, " ").trim();
+    return one.length > 80 ? `${one.slice(0, 79)}…` : one;
+  };
+  const text = s.to.trim() ? `replace "${clip(s.from)}" with "${clip(s.to)}"` : `delete "${clip(s.from)}"`;
+  return ` Suggested fix: ${text}.`.replace(/%/g, "%25");
+}
+
 async function main() {
   const key = input("api-key");
   if (!key) {
@@ -67,7 +78,7 @@ async function main() {
     }
     const r = await res.json();
     for (const f of r.findings) {
-      out(f.severity === "minor" ? "notice" : "warning", file, f.line ?? 1, `${f.severity} ${f.rule}: ${f.detail}`);
+      out(f.severity === "minor" ? "notice" : "warning", file, f.line ?? 1, `${f.severity} ${f.rule}: ${f.detail}${fixNote(f.suggestion)}`);
     }
     console.log(`${file}: ${r.score}/100 (threshold ${threshold}) -> ${r.pass ? "PASS" : "FAIL"}`);
     if (!r.pass) {
