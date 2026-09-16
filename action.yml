@@ -23,7 +23,7 @@ inputs:
   endpoint:
     description: API origin.
     required: false
-    default: https://copylint.vercel.app
+    default: https://copylint.splitlabs.io
 runs:
   using: node20
   main: index.js
