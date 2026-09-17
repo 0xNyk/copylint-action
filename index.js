@@ -53,7 +53,7 @@ async function main() {
     console.log("::error::api-key input is required");
     process.exit(2);
   }
-  const endpoint = input("endpoint", "https://copylint.splitlabs.io").replace(/\/$/, "");
+  const endpoint = input("endpoint", "https://copylint.xyz").replace(/\/$/, "");
   const threshold = Number(input("threshold", "40"));
   const personal = input("personal", "false") === "true";
   const files = changedFiles() ?? globFiles(input("files", "**/*.md"));
