@@ -53,7 +53,7 @@ async function main() {
     console.log("::error::api-key input is required");
     process.exit(2);
   }
-  const endpoint = input("endpoint", "https://copylint.vercel.app").replace(/\/$/, "");
+  const endpoint = input("endpoint", "https://copylint.splitlabs.io").replace(/\/$/, "");
   const threshold = Number(input("threshold", "40"));
   const personal = input("personal", "false") === "true";
   const files = changedFiles() ?? globFiles(input("files", "**/*.md"));
@@ -69,7 +69,7 @@ async function main() {
     const res = await fetch(`${endpoint}/api/v1/scan`, {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ text, threshold, personal, title: file }),
+      body: JSON.stringify({ text, threshold, personal, title: file.slice(0, 200) }),
     });
     if (!res.ok) {
       const body = await res.text();
